@@ -1,0 +1,37 @@
+Player Movement
+- W to move forward no moving backwards cuz that would not work. 
+- Mouse is to point the character... only problem is that this might be wierd in third person but I guess a lot of battle royales do that
+- Need extra keys to perform extra moves... like boost, and just useless tricks
+- That should be about it... need to really make animation transitions smooth
+
+Camera Relative to Player Movement
+- Need to crank up camera smoothing to the next level...
+- Case where if a person is going through a loop(think roller coaster) the camera will pause movement and only rotate to track the player.
+This will be super hard to program because it will be hard to tell when a player is moving and meaning to do a loop. And it woukld also be hard
+because raycasting depends on camera being right behnid player... Another way is that there is just a key and it would make it a lot easier.
+- Behind player with z+ offset should work the best
+- Need to figure out how to disconnect camera from player a lot to give better visuals while still keeping 3rd person shooteresque controls.
+Could try doing cutscenes when the camera needs to move and make it super smooth like it's supposed to happen.
+- Might need to change controls heavily.
+
+New Player Movement Idea
+- Use both WASD and Arrow Keys --- this could be brought over to controllers too
+- Arrow Keys Control the Player Direction linked with the Camera. 
+- Not a great idea for keyboard because having two inputs for direction in different ways is kinda shitty
+
+Even Newer Player Movement idea
+- Derivative of previous idea.
+- Use WASD to contrller which direction the player will be going UP-LEFT-RIGHT-DOWN while using another button to swim forward...
+- Camera still needs to be figured out a bit but should be a lot easier now.
+- Need to figure out player controller a bit more about how the coding is gonna look but this should be the final iteration of the controller. 
+- More free Camera Movement though this system will def encourage u to use a controller so it might be helpful to build around that
+- if they are trying to point the character while idling it either
+    -won't work
+    -Only the player's head will look in that direction --- only problem is the fact that I have no clue if it is even possible to control a rig 
+made in blender through unity. Needs more researh
+    -might save time going first option but having the player's head point in the direction is a very nice touch i.e Hollow Knight(though there was actually a use for that tbh)
+
+Camera movement relative to new player movement
+- Can now just lock the camera behind the player and have the ability to unlock without affecting how the player will move.
+- How should player be moving if we are giving side view then. probably still with whatever button is swim cuz WASD is not controlling player movment but rather the direction
+- Can give a more cinematic angle during certain parts of the game --- a nice touch and almost a must have in adventure games i.e Abzu
