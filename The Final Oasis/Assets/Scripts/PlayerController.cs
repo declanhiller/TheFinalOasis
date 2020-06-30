@@ -33,10 +33,16 @@ public class PlayerController : MonoBehaviour
                 float distance2 = 320f - transform.eulerAngles.x;
                 if(distance1 > distance2)
                 {
-                    vectorRotations = new Vector3(0f, yaw);
+                    if (pitch < 0)
+                    {
+                        vectorRotations = new Vector3(0f, yaw);
+                    }
                 } else
                 {
-                    vectorRotations = new Vector3(0f, yaw);
+                    if (pitch > 0)
+                    {
+                        vectorRotations = new Vector3(0f, yaw);
+                    }
                 }
             }
         }
