@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     GameObject frontTarget;
     Rigidbody rb;
+    Vector3 currentEulerAngles;
+    public float turnSpeed = 45f;
     public float speed = 10f;
-    float roll;
     float pitch;
     float yaw;
     void Start()
@@ -22,31 +23,33 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         yaw = Input.GetAxisRaw("Horizontal");
-        pitch = Input.GetAxisRaw("Vertical");
-        roll = Input.GetAxisRaw("Roll");
+        pitch = -Input.GetAxisRaw("Vertical");
+        Vector3 vectorRotations = new Vector3(pitch, yaw);
+        if (yaw != 0 && pitch != 0)
+        {
+            if (transform.eulerAngles.x >= 40 && transform.eulerAngles.x <= 320)
+            {
+                float distance1 = transform.eulerAngles.x - 40f;
+                float distance2 = 320f - transform.eulerAngles.x;
+                if(distance1 > distance2)
+                {
+                    vectorRotations = new Vector3(0f, yaw);
+                } else
+                {
+                    vectorRotations = new Vector3(0f, yaw);
+                }
+            }
+        }
+        currentEulerAngles += vectorRotations * Time.deltaTime * turnSpeed;
+        transform.eulerAngles = currentEulerAngles;
 
-        transform.Rotate(Vector3.up * yaw * 50f * Time.deltaTime, Space.Self);
-        transform.Rotate(Vector3.left * pitch * 50f * Time.deltaTime, Space.Self);
-        transform.Rotate(Vector3.forward * roll * 150f * Time.deltaTime, Space.Self);
+        //transform.eulerAngles = new Vector3(gameObject.transform.rotation.x + (pitch), gameObject.transform.rotation.y + (yaw), gameObject.transform.rotation.z);
 
-
-        if(Input.GetAxisRaw("Swim") != 0)
+        if (Input.GetAxisRaw("Swim") != 0)
         {
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
 
-        if(transform.rotation.z != 0)
-        {
-            resetRoll();
-        }
     }
 
-    void resetRoll()
-    {
-        //print("resetting roll");
-
-        float step = transform.rotation.z / 2;
-        transform.Rotate(Vector3.back * step * Time.deltaTime);
-   
-    }
 }
