@@ -12,50 +12,75 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     float pitch;
     float yaw;
+    bool isTurningAround;
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         frontTarget = GameObject.FindGameObjectWithTag("front target");
         frontTarget.transform.position = new Vector3(gameObject.transform.position.x+0.243f, gameObject.transform.position.y, gameObject.transform.position.z+2);
+        isTurningAround = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        yaw = Input.GetAxisRaw("Horizontal");
-        pitch = -Input.GetAxisRaw("Vertical");
-        Vector3 vectorRotations = new Vector3(pitch, yaw);
-        if (yaw != 0 && pitch != 0)
-        {
-            if (transform.eulerAngles.x >= 40 && transform.eulerAngles.x <= 320)
-            {
-                float distance1 = transform.eulerAngles.x - 40f;
-                float distance2 = 320f - transform.eulerAngles.x;
-                if(distance1 > distance2)
-                {
-                    if (pitch < 0)
-                    {
-                        vectorRotations = new Vector3(0f, yaw);
-                    }
-                } else
-                {
-                    if (pitch > 0)
-                    {
-                        vectorRotations = new Vector3(0f, yaw);
-                    }
-                }
-            }
-        }
-        currentEulerAngles += vectorRotations * Time.deltaTime * turnSpeed;
-        transform.eulerAngles = currentEulerAngles;
-
-        //transform.eulerAngles = new Vector3(gameObject.transform.rotation.x + (pitch), gameObject.transform.rotation.y + (yaw), gameObject.transform.rotation.z);
 
         if (Input.GetAxisRaw("Swim") != 0)
         {
+
+            yaw = Input.GetAxisRaw("Horizontal");
+            pitch = -Input.GetAxisRaw("Vertical");
+            Vector3 vectorRotations = new Vector3(pitch, yaw);
+            if (yaw != 0 && pitch != 0)
+            {
+                if (transform.eulerAngles.x >= 40 && transform.eulerAngles.x <= 320)
+                {
+                    float distance1 = transform.eulerAngles.x - 40f;
+                    float distance2 = 320f - transform.eulerAngles.x;
+                    if (distance1 > distance2)
+                    {
+                        if (pitch < 0)
+                        {
+                            vectorRotations = new Vector3(0f, yaw);
+                        }
+                    } else
+                    {
+                        if (pitch > 0)
+                        {
+                            vectorRotations = new Vector3(0f, yaw);
+                        }
+                    }
+                }
+            }
+            currentEulerAngles += vectorRotations * Time.deltaTime * turnSpeed;
+            transform.eulerAngles = currentEulerAngles;
+
+
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
 
+        if (transform.eulerAngles.z == 180 && Input.GetAxisRaw("Swim") == 0)
+        {
+            isTurningAround = true;
+        }
+
+        if(isTurningAround)
+        {
+            if(transform.eulerAngles.z == 0)
+            {
+                isTurningAround = false;
+            }
+
+            float speed = 140f;
+            if (transform.eulerAngles.z - 0 < 140 * Time.deltaTime)
+            {
+                speed = 0f;
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+            }
+            transform.eulerAngles -= new Vector3(0, 0, 1 * Time.deltaTime * speed);
+            speed = 140f;
+        }
     }
 
 }
