@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour
     float pitch;
     float yaw;
     bool isTurningAround;
+    bool isTurningBack;
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         frontTarget = GameObject.FindGameObjectWithTag("front target");
         frontTarget.transform.position = new Vector3(gameObject.transform.position.x+0.243f, gameObject.transform.position.y, gameObject.transform.position.z+2);
         isTurningAround = false;
+        isTurningBack = false;
 
     }
 
@@ -31,7 +33,14 @@ public class PlayerController : MonoBehaviour
 
             yaw = Input.GetAxisRaw("Horizontal");
             pitch = -Input.GetAxisRaw("Vertical");
-            Vector3 vectorRotations = new Vector3(pitch, yaw);
+            Vector3 vectorRotations = new Vector2(pitch, yaw);
+
+            if (isTurningBack)
+            {
+                print("true");
+                // need to add logic to turn player back
+            }
+
             if (yaw != 0 && pitch != 0)
             {
                 if (transform.eulerAngles.x >= 40 && transform.eulerAngles.x <= 320)
@@ -42,20 +51,21 @@ public class PlayerController : MonoBehaviour
                     {
                         if (pitch < 0)
                         {
-                            vectorRotations = new Vector3(0f, yaw);
+                            vectorRotations = new Vector2(0f, yaw);
                         }
                     } else
                     {
                         if (pitch > 0)
                         {
-                            vectorRotations = new Vector3(0f, yaw);
+                            vectorRotations = new Vector2(0f, yaw);
                         }
                     }
                 }
             }
+
+
             currentEulerAngles += vectorRotations * Time.deltaTime * turnSpeed;
             transform.eulerAngles = currentEulerAngles;
-
 
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
@@ -67,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
         if(isTurningAround)
         {
-            if(transform.eulerAngles.z == 0)
+            if(transform.eulerAngles.z < 0.2)
             {
                 isTurningAround = false;
             }
@@ -80,7 +90,16 @@ public class PlayerController : MonoBehaviour
             }
             transform.eulerAngles -= new Vector3(0, 0, 1 * Time.deltaTime * speed);
             speed = 140f;
+
+            if(Input.GetAxisRaw("Swim") != 0)
+            {
+                isTurningAround = false;
+                isTurningBack = true;
+            }
         }
+
+        //is turning around is true when you abruptly interrupt it
+
     }
 
 }
