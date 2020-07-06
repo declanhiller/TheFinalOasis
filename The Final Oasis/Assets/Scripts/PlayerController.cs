@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     GameObject frontTarget;
     GameObject head;
+    GameObject placeholderTarget;
     Rigidbody rb;
     Vector3 currentEulerAngles;
     public float turnSpeed = 45f;
@@ -20,11 +21,11 @@ public class PlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         frontTarget = GameObject.FindGameObjectWithTag("front target");
         head = GameObject.FindGameObjectWithTag("head");
-        frontTarget.transform.position = new Vector3(head.transform.position.x, head.transform.position.y, head.transform.position.z+2);
+        placeholderTarget = GameObject.FindGameObjectWithTag("target");
+        placeholderTarget.transform.position = new Vector3(head.transform.position.x, head.transform.position.y, head.transform.position.z+2.5f);
+        frontTarget.transform.position = new Vector3(placeholderTarget.transform.position.x, placeholderTarget.transform.position.y, placeholderTarget.transform.position.z);
         isTurningAround = false;
         isTurningBack = false;
-        //0.243
-
     }
 
     // Update is called once per frame
